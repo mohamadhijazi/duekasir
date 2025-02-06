@@ -135,7 +135,7 @@ class Expanses extends StatelessWidget {
                   ],
                 );
               },
-              error: (e, __) => Text('$e ${__}'),
+              error: (e, __) => Text('$e $__'),
               loading: () => const Center(
                 child: CircularProgressIndicator(),
               ),
