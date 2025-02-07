@@ -4,6 +4,7 @@ part 'store_model.g.dart';
 
 @collection
 class StoreModel {
+   
   Id? id = Isar.autoIncrement;
   late String title;
   late String description;

@@ -4,6 +4,7 @@ part 'rent_item_model.g.dart';
 
 @collection
 class RentItemModel {
+  
   Id? id = Isar.autoIncrement;
   String name;
   String code;

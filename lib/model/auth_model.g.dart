@@ -41,7 +41,7 @@ const AuthModelSchema = CollectionSchema(
   getId: _authModelGetId,
   getLinks: _authModelGetLinks,
   attach: _authModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _authModelEstimateSize(
@@ -89,7 +89,7 @@ P _authModelDeserializeProp<P>(
 }
 
 Id _authModelGetId(AuthModel object) {
-  return object.id;
+  return object.id ?? Isar.autoIncrement;
 }
 
 List<IsarLinkBase<dynamic>> _authModelGetLinks(AuthModel object) {
@@ -234,8 +234,24 @@ extension AuthModelQueryFilter
     });
   }
 
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> idIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'id',
+      ));
+    });
+  }
+
+  QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> idIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'id',
+      ));
+    });
+  }
+
   QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> idEqualTo(
-      Id value) {
+      Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -245,7 +261,7 @@ extension AuthModelQueryFilter
   }
 
   QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> idGreaterThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -258,7 +274,7 @@ extension AuthModelQueryFilter
   }
 
   QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> idLessThan(
-    Id value, {
+    Id? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -271,8 +287,8 @@ extension AuthModelQueryFilter
   }
 
   QueryBuilder<AuthModel, AuthModel, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
+    Id? lower,
+    Id? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {

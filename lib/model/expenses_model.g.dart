@@ -54,7 +54,7 @@ const ExpensesModelSchema = CollectionSchema(
   getId: _expensesModelGetId,
   getLinks: _expensesModelGetLinks,
   attach: _expensesModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _expensesModelEstimateSize(

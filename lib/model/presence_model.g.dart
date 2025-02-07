@@ -69,7 +69,7 @@ const PresenceModelSchema = CollectionSchema(
   getId: _presenceModelGetId,
   getLinks: _presenceModelGetLinks,
   attach: _presenceModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _presenceModelEstimateSize(

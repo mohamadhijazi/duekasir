@@ -518,7 +518,7 @@ class Database {
     final isar = await db;
     IsarCollection<PenjualanModel> inventoryCollection =
         isar.collection<PenjualanModel>();
-    final items = await inventoryCollection.where().findAll();
+    final items =await inventoryCollection.where().findAll();
 
     final Map<int, List<PenjualanModel>> listOfOrders =
         items.groupListsBy((i) => i.kasir);
@@ -551,12 +551,12 @@ class Database {
         isar.collection<PenjualanModel>();
     if (isDeviceConnected.value && supabase.auth.currentUser != null) {
       final List<PenjualanModel> res = await _supabaseHelper.getRepots();
-      final items = await reportCollection.where().findAll();
+      final items =await reportCollection.where().findAll();
       if (res.length == items.length) {
         return items;
       } else {
         await insertReportFresh(res);
-        final freshItems = await reportCollection.where().findAll();
+        final freshItems =await reportCollection.where().findAll();
         return freshItems;
       }
     }
@@ -633,7 +633,7 @@ class Database {
     IsarCollection<PresenceModel> presenseCollection =
         isar.collection<PresenceModel>();
 
-    final presense = await presenseCollection.where().findAll();
+    final presense =await presenseCollection.where().findAll();
     if (presense.isNotEmpty) {
       final res = await _supabaseHelper.getPresense();
       if (res.length != presense.length) {
@@ -870,7 +870,7 @@ class Database {
     IsarCollection<ExpensesModel> expensesCollection =
         isar.collection<ExpensesModel>();
 
-    final expenses = await expensesCollection.where().findAll();
+    final expenses =await expensesCollection.where().findAll();
     if (expenses.isNotEmpty) {
       final res = await _supabaseHelper.getExpenses();
       if (res.length != expenses.length) {
@@ -952,7 +952,7 @@ class Database {
     IsarCollection<SalaryModel> salaryCollection =
         isar.collection<SalaryModel>();
 
-    final salary = await salaryCollection.where().findAll();
+    final salary =await salaryCollection.where().findAll();
     if (salary.isNotEmpty) {
       final res = await _supabaseHelper.getSalarys();
       if (res.length != salary.length) {
@@ -1080,7 +1080,7 @@ class Database {
       // if already we have another backup file, delete it here.
       await backUpFile.delete();
     }
-    await isar.copyToFile('${backUpDir?.path}/backup_db.isar');
+    isar.copyToFile('${backUpDir?.path}/backup_db.isar');
   }
 
   Future<void> restoreDB() async {
@@ -1093,7 +1093,7 @@ class Database {
       await isar.close(deleteFromDisk: true).then((_) async {
         File targetFile = await file.copy("${dbDirectory.path}/default.isar");
         log("Correctly copied to ${targetFile.path}");
-        await Isar.open(
+        Isar.open(
           [
             ItemModelSchema,
             CustomerModelSchema,
@@ -1117,13 +1117,13 @@ class Database {
   Future<void> clearAllData() async {
     final isar = await db;
     isar.writeTxn<void>(() => isar.clear());
-    await isar.close(deleteFromDisk: true);
+    isar.close(deleteFromDisk: true);
   }
 
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
-      final isar = await Isar.open(
+      final isar = Isar.open(
         [
           ItemModelSchema,
           CustomerModelSchema,

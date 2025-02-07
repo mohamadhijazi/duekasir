@@ -94,7 +94,7 @@ const RentModelSchema = CollectionSchema(
   getId: _rentModelGetId,
   getLinks: _rentModelGetLinks,
   attach: _rentModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _rentModelEstimateSize(

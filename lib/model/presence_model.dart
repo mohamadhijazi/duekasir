@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 part 'presence_model.g.dart';
 
 @collection
+
 class PresenceModel {
   Id? id = Isar.autoIncrement;
   int user;

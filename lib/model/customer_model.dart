@@ -5,6 +5,7 @@ part 'customer_model.g.dart';
 
 @collection
 class CustomerModel {
+   
   Id? id = Isar.autoIncrement;
   late String nama;
   String? phone;

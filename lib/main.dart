@@ -7,7 +7,6 @@ import 'package:due_kasir/service/get_it.dart';
 import 'package:due_kasir/utils/env.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -42,7 +41,7 @@ class _MyAppState extends State<MyApp> {
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> result) async {
-      isDeviceConnected.value = await InternetConnectionChecker().hasConnection;
+      isDeviceConnected.value = false;
       log("Internet status ====== $isDeviceConnected");
     });
   }

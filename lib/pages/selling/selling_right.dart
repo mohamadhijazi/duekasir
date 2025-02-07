@@ -17,9 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:intl/intl.dart';
 import 'package:signals/signals_flutter.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
     as usb_esc_printer_windows;
@@ -42,9 +41,7 @@ class SellingRightState extends State<SellingRight> {
     super.initState();
     if (Platform.isWindows) {
       _profile = CapabilityProfile.load();
-    } else {
-      if (!Platform.isMacOS) checkConnection();
-    }
+    } 
   }
 
   @override
@@ -443,10 +440,7 @@ class SellingRightState extends State<SellingRight> {
   //   );
   // }
 
-  void checkConnection() async {
-    isConnected = await PrintBluetoothThermal.connectionStatus;
-    setState(() {});
-  }
+ 
 
   Future<Uint8List> loadImageFromAssets(String path) async {
     final ByteData data = await rootBundle.load(path);
@@ -596,7 +590,7 @@ class SellingRightState extends State<SellingRight> {
       await usb_esc_printer_windows.sendPrintRequest(
           bytes, printName ?? 'Xprinter XP-T371U');
     } else {
-      await PrintBluetoothThermal.writeBytes(bytes);
+      //await PrintBluetoothThermal.writeBytes(bytes);
     }
   }
 }

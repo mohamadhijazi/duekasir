@@ -81,7 +81,7 @@ const SalaryModelSchema = CollectionSchema(
   getId: _salaryModelGetId,
   getLinks: _salaryModelGetLinks,
   attach: _salaryModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _salaryModelEstimateSize(

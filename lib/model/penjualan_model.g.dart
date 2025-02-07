@@ -70,7 +70,7 @@ const PenjualanModelSchema = CollectionSchema(
   getId: _penjualanModelGetId,
   getLinks: _penjualanModelGetLinks,
   attach: _penjualanModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _penjualanModelEstimateSize(
