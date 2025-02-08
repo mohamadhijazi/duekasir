@@ -69,7 +69,7 @@ class SellingRightState extends State<SellingRight> {
         key: sellingFormKey,
         child: ShadCard(
           title: Text('Payment', style: ShadTheme.of(context).textTheme.h4),
-          description: Text('Rangkuman belanja ${store.value?.title ?? ''}'),
+          description: Text('ملخص التسوق ${store.value?.title ?? ''}'),
           footer: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -77,10 +77,10 @@ class SellingRightState extends State<SellingRight> {
                 child: ShadCheckboxFormField(
                   id: 'terms',
                   initialValue: false,
-                  inputLabel: const Text('Saya Bertanggun Jawab'),
+                  inputLabel: const Text('أنا مسؤول'),
                   onChanged: (v) {},
                   inputSublabel: const Text(
-                      'Barang sudah saya cek dan sudah di bayar pelanggan dengan nominal yg benar'),
+                      'لقد قمت بفحص البضائع وقام العميل بدفع المبلغ الصحيح'),
                   validator: (v) {
                     if (!v) {
                       return 'You must accept the terms and conditions';
@@ -146,89 +146,90 @@ class SellingRightState extends State<SellingRight> {
                     size: 16,
                   ),
                 ),
-                child: const Text('Simpan'),
+                child: const Text('يحفظ'),
               ),
-              ShadButton(
-                onPressed: () {
-                  if (sellingFormKey.currentState!.validate() &&
-                      store.hasValue) {
-                    List<ProductItemModel> products = [];
-                    for (ItemModel p in list.value!.items) {
-                      products.add(
-                        ProductItemModel()
-                          ..id = p.id!
-                          ..nama = p.nama
-                          ..code = p.code
-                          ..quantity = p.quantity
-                          ..hargaJual = p.hargaJual
-                          ..ukuran = p.ukuran
-                          ..isHargaJualPersen = p.isHargaJualPersen
-                          ..hargaJualPersen = p.hargaJualPersen
-                          ..hargaDasar = p.hargaDasar
-                          ..diskonPersen = p.diskonPersen
-                          ..deskripsi = p.deskripsi
-                          ..jumlahBarang = p.jumlahBarang
-                          ..isSynced = p.isSynced,
-                      );
-                    }
-                    final newItem = PenjualanModel(
-                      id: DateTime.now().microsecondsSinceEpoch,
-                      items: products,
-                      kasir: kasir?.id ?? 1,
-                      keterangan: note.text,
-                      diskon: 0,
-                      totalHarga: list.value?.totalPrice ?? 0.0,
-                      totalItem: list.value?.totalItem ?? 0,
-                      pembeli: pelanggan?.id,
-                      createdAt: DateTime.now(),
-                    );
-                    if (products.isEmpty) return;
-                    Database().addPenjualan(newItem).whenComplete(() {
-                      letsPrint(
-                              store: store.value!,
-                              model: newItem,
-                              kasir: kasir?.nama ?? 'Umum',
-                              tipe: tipeBayar,
-                              total: cashEditing.text,
-                              kembalian: (double.parse(
-                                          cashEditing.text.isNotEmpty
-                                              ? cashEditing.text
-                                              : '0') -
-                                      (list.value?.totalPrice ?? 0.0))
-                                  .toString(),
-                              printName: printName)
-                          .whenComplete(() {
-                        cashEditing.clear();
-                        note.clear();
-                        getIt.get<SellingController>().tipeBayar.value =
-                            TypePayment.qris;
-                        sellingFormKey.currentState?.reset();
-                        getIt
-                            .get<SellingController>()
-                            .updateBatch(list.value!.items)
-                            .whenComplete(() => getIt
-                                .get<SellingController>()
-                                .dispatch(CartPaid()));
-                        // sendWhatsapp(
-                        //   store: store.value!,
-                        //   sales: newItem,
-                        //   customer: pelanggan,
-                        // );
-                      });
-                    });
-                  }
-                },
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Icon(
-                    isConnected && !Platform.isWindows || printName.isNotEmpty
-                        ? Icons.print
-                        : Icons.print_disabled,
-                    size: 16,
-                  ),
-                ),
-                child: const Text('Print'),
-              ),
+              // ShadButton(
+              //   onPressed: () {
+              //     if (sellingFormKey.currentState!.validate() &&
+              //         store.hasValue) {
+              //       List<ProductItemModel> products = [];
+              //       for (ItemModel p in list.value!.items) {
+              //         products.add(
+              //           ProductItemModel()
+              //             ..id = p.id!
+              //             ..nama = p.nama
+              //             ..code = p.code
+              //             ..quantity = p.quantity
+              //             ..hargaJual = p.hargaJual
+              //             ..ukuran = p.ukuran
+              //             ..isHargaJualPersen = p.isHargaJualPersen
+              //             ..hargaJualPersen = p.hargaJualPersen
+              //             ..hargaDasar = p.hargaDasar
+              //             ..diskonPersen = p.diskonPersen
+              //             ..deskripsi = p.deskripsi
+              //             ..jumlahBarang = p.jumlahBarang
+              //             ..isSynced = p.isSynced,
+              //         );
+              //       }
+              //       final newItem = PenjualanModel(
+              //         id: DateTime.now().microsecondsSinceEpoch,
+              //         items: products,
+              //         kasir: kasir?.id ?? 1,
+              //         keterangan: note.text,
+              //         diskon: 0,
+              //         totalHarga: list.value?.totalPrice ?? 0.0,
+              //         totalItem: list.value?.totalItem ?? 0,
+              //         pembeli: pelanggan?.id,
+              //         createdAt: DateTime.now(),
+              //       );
+              //       if (products.isEmpty) return;
+              //       Database().addPenjualan(newItem).whenComplete(() {
+              //         letsPrint(
+              //                 store: store.value!,
+              //                 model: newItem,
+              //                 kasir: kasir?.nama ?? 'Umum',
+              //                 tipe: tipeBayar,
+              //                 total: cashEditing.text,
+              //                 kembalian: (double.parse(
+              //                             cashEditing.text.isNotEmpty
+              //                                 ? cashEditing.text
+              //                                 : '0') -
+              //                         (list.value?.totalPrice ?? 0.0))
+              //                     .toString(),
+              //                 printName: printName)
+              //             .whenComplete(() {
+              //           cashEditing.clear();
+              //           note.clear();
+              //           getIt.get<SellingController>().tipeBayar.value =
+              //               TypePayment.qris;
+              //           sellingFormKey.currentState?.reset();
+              //           getIt
+              //               .get<SellingController>()
+              //               .updateBatch(list.value!.items)
+              //               .whenComplete(() => getIt
+              //                   .get<SellingController>()
+              //                   .dispatch(CartPaid()));
+              //           // sendWhatsapp(
+              //           //   store: store.value!,
+              //           //   sales: newItem,
+              //           //   customer: pelanggan,
+              //           // );
+              //         });
+              //       });
+              //     }
+              //   },
+              //   icon: Padding(
+              //     padding: const EdgeInsets.only(right: 8),
+              //     child: Icon(
+              //       isConnected && !Platform.isWindows || printName.isNotEmpty
+              //           ? Icons.print
+              //           : Icons.print_disabled,
+              //       size: 16,
+              //     ),
+              //   ),
+              //   child: const Text('Print'),
+              // ),
+          
             ],
           ),
           child: Padding(
@@ -240,14 +241,14 @@ class SellingRightState extends State<SellingRight> {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text(kasir?.nama ?? 'Admin'),
-                  subtitle: const Text('Kasir'),
+                  subtitle: const Text('Hakim'),
                   trailing: const Icon(Icons.arrow_right),
-                  onTap: () => context.push('/home'),
+                  // onTap: () => context.push('/home'),
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  title: Text(pelanggan?.nama ?? 'Mommy'),
-                  subtitle: const Text('Pelanggan'),
+                  title: Text(pelanggan?.nama ?? 'Customer'),
+                  subtitle: const Text('Customer'),
                   trailing: const Icon(Icons.arrow_right),
                   onTap: () {
                     showShadSheet(
@@ -266,7 +267,7 @@ class SellingRightState extends State<SellingRight> {
                   ),
                 ),
                 ShadRadioGroupFormField<TypePayment>(
-                  label: const Text('Tipe pembayaran'),
+                  label: const Text('نوع الدفع'),
                   initialValue: tipeBayar,
                   onChanged: (TypePayment? val) {
                     getIt.get<SellingController>().tipeBayar.value = val!;
@@ -291,7 +292,7 @@ class SellingRightState extends State<SellingRight> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Nominal Cash'),
+                            const Text(' Cash'),
                             ShadInput(
                               controller: cashEditing,
                               inputFormatters: [
@@ -307,7 +308,7 @@ class SellingRightState extends State<SellingRight> {
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Kembalian'),
+                          const Text('Remain'),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(currency.format((double.parse(
@@ -321,7 +322,7 @@ class SellingRightState extends State<SellingRight> {
                       ))
                     ],
                   ),
-                const Text('Catatan'),
+                const Text('ملحوظات'),
                 ShadInput(
                   controller: note,
                   maxLines: 3,

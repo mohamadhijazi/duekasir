@@ -51,6 +51,7 @@ class CustomerList extends HookWidget {
                 }
                 return DataTable(
                   columns: const [
+                     DataColumn(label: Text('Action')),
                     DataColumn(label: Text('ID')),
                     DataColumn(label: Text('Name')),
                     DataColumn(label: Text('Phone')),
@@ -59,10 +60,17 @@ class CustomerList extends HookWidget {
                     DataColumn(label: Text('Status')),
                     DataColumn(label: Text('Join')),
                     DataColumn(label: Text('Description')),
-                    DataColumn(label: Text('More')),
+                   
                   ],
                   rows: customers.map((user) {
                     return DataRow(cells: [
+                        DataCell(
+                        const Icon(Icons.keyboard_arrow_right_outlined),
+                        onTap: () {
+                          customerController.customerSelected.value = user;
+                          context.push('/customer/form');
+                        },
+                      ),
                       DataCell(Text(user.id.toString())),
                       DataCell(Text(user.nama)),
                       DataCell(Text(user.phone ?? '-')),
@@ -74,13 +82,7 @@ class CustomerList extends HookWidget {
                       DataCell(Text(
                           dateWithTime.format(user.masuk ?? DateTime.now()))),
                       DataCell(Text(user.keterangan ?? '')),
-                      DataCell(
-                        const Icon(Icons.keyboard_arrow_right_outlined),
-                        onTap: () {
-                          customerController.customerSelected.value = user;
-                          context.push('/customer/form');
-                        },
-                      ),
+                    
                     ]);
                   }).toList(),
                 );

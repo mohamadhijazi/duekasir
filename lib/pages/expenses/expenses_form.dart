@@ -56,7 +56,7 @@ class ExpensesForm extends HookWidget {
                   validator: (val) =>
                       val.isEmpty == true ? 'Title is required' : null,
                   label: const Text('Title'),
-                  placeholder: const Text('ex. uang makan'),
+                  placeholder: const Text('ex. title'),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -103,7 +103,7 @@ class ExpensesForm extends HookWidget {
                   controller: note,
                   label: const Text('Note'),
                   maxLines: 3,
-                  placeholder: const Text('ex. kurir jne'),
+                  placeholder: const Text('ex. Note'),
                 ),
               ],
             ),

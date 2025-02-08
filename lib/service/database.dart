@@ -435,31 +435,31 @@ class Database {
     final isar = await db;
     IsarCollection<PenjualanModel> reportCollection =
         isar.collection<PenjualanModel>();
-    if (isDeviceConnected.value && supabase.auth.currentUser != null) {
-      final List<PenjualanModel> res = await _supabaseHelper.getRepots(
-        start: start.copyWith(hour: 0, minute: 0, second: 0),
-        end: end.copyWith(hour: 23, minute: 59, second: 59),
-      );
+    // if (isDeviceConnected.value && supabase.auth.currentUser != null) {
+    //   final List<PenjualanModel> res = await _supabaseHelper.getRepots(
+    //     start: start.copyWith(hour: 0, minute: 0, second: 0),
+    //     end: end.copyWith(hour: 23, minute: 59, second: 59),
+    //   );
       final items = await reportCollection
           .where()
           .filter()
           .createdAtBetween(start.copyWith(hour: 0, minute: 0, second: 0),
               end.copyWith(hour: 23, minute: 59, second: 59))
           .findAll();
-      if (res.length == items.length || items.length >= res.length) {
+      if (true) {
         return items;
-      } else {
-        await insertReportFresh(res);
-        final freshItems = await reportCollection
-            .where()
-            .filter()
-            .createdAtBetween(start.copyWith(hour: 0, minute: 0, second: 0),
-                end.copyWith(hour: 23, minute: 59, second: 59))
-            .findAll();
-        return freshItems;
-      }
+      // } else {
+      //   await insertReportFresh(res);
+      //   final freshItems = await reportCollection
+      //       .where()
+      //       .filter()
+      //       .createdAtBetween(start.copyWith(hour: 0, minute: 0, second: 0),
+      //           end.copyWith(hour: 23, minute: 59, second: 59))
+      //       .findAll();
+      //   return freshItems;
+      // }
     }
-    return [];
+   // return [];
   }
 
   Future<List<PenjualanModel>> getReportById({

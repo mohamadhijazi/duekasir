@@ -105,7 +105,7 @@ class InventoryList extends HookWidget {
                           FileSaver.instance
                               .saveFile(
                                   name:
-                                      'due-kasir-${DateTime.now().millisecondsSinceEpoch}.csv',
+                                      'due-Hakim-${DateTime.now().millisecondsSinceEpoch}.csv',
                                   file: fileCsv)
                               .then(
                                 (_) => const ShadToast(
@@ -116,7 +116,7 @@ class InventoryList extends HookWidget {
                               );
                         } else {
                           await FileSaver.instance.saveAs(
-                              name: 'due-kasir',
+                              name: 'due-Hakim',
                               file: fileCsv,
                               ext: 'csv',
                               mimeType: MimeType.csv);
@@ -220,8 +220,8 @@ class InventoryList extends HookWidget {
                     DataColumn(label: Text('Nama')),
                     DataColumn(label: Text('Code')),
                     DataColumn(label: Text('Stock')),
-                    DataColumn(label: Text('Harga')),
-                    DataColumn(label: Text('Ukuran')),
+                    DataColumn(label: Text('سعر')),
+                    DataColumn(label: Text('مقاس')),
                     DataColumn(label: Text('More')),
                   ],
                   dataRowMaxHeight: 80.0,

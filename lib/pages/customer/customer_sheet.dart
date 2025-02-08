@@ -64,21 +64,16 @@ class CustomerSheet extends HookWidget {
                       data: (customer) {
                         return DataTable(
                           columns: const [
+                             DataColumn(label: Text('More')),
                             DataColumn(label: Text('ID')),
                             DataColumn(label: Text('Name')),
                             DataColumn(label: Text('Phone')),
                             DataColumn(label: Text('Status')),
-                            DataColumn(label: Text('More')),
+                           
                           ],
                           rows: customer.map((user) {
                             return DataRow(cells: [
-                              DataCell(Text(user.id.toString())),
-                              DataCell(Text(user.nama)),
-                              DataCell(Text((user.phone ?? '').toString())),
-                              DataCell(Text(user.status == true
-                                  ? 'Active'
-                                  : 'Non Active')),
-                              DataCell(ShadButton.outline(
+                               DataCell(ShadButton.outline(
                                 child: const Text('Select'),
                                 onPressed: () {
                                   getIt
@@ -88,6 +83,13 @@ class CustomerSheet extends HookWidget {
                                   context.pop();
                                 },
                               )),
+                              DataCell(Text(user.id.toString())),
+                              DataCell(Text(user.nama)),
+                              DataCell(Text((user.phone ?? '').toString())),
+                              DataCell(Text(user.status == true
+                                  ? 'Active'
+                                  : 'Non Active')),
+                             
                             ]);
                           }).toList(),
                         );

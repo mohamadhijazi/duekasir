@@ -23,7 +23,7 @@ class _ReportSyncDialogState extends State<ReportSyncDialog> {
     return ShadForm(
       key: reportFormKey,
       child: ShadDialog(
-        title: const Text('Sync Item Penjualan'),
+        title: const Text('Sync Item '),
         description: const Text(
             "Are you sure to sync this Item, this action can't be undo"),
         actions: [

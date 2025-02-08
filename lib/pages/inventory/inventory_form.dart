@@ -140,8 +140,8 @@ class InventoryForm extends HookWidget {
                       child: ShadInputFormField(
                         controller: editingUkuran,
                         validator: (val) =>
-                            val.isEmpty == true ? 'Ukuran is required' : null,
-                        label: const Text('Ukuran Barang'),
+                            val.isEmpty == true ? 'is required' : null,
+                        label: const Text('حجم السلعة'),
                         placeholder: const Text('ex. S/M/L 50ml/100ml'),
                       ),
                     ),
@@ -174,7 +174,7 @@ class InventoryForm extends HookWidget {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                        label: const Text('Harga Dasar'),
+                        label: const Text('السعر الأساسي'),
                       ),
                     ),
                     Expanded(
@@ -183,7 +183,7 @@ class InventoryForm extends HookWidget {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                        label: const Text('H Jual Persen'),
+                        label: const Text(' بيع في المئة'),
                       ),
                     ),
                     Expanded(
@@ -191,7 +191,7 @@ class InventoryForm extends HookWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 5),
-                          const Text('Harga Jual'),
+                          const Text('سعر البيع'),
                           const SizedBox(height: 20),
                           Text('${hargaJual.value.toInt()}'),
                           const SizedBox(height: 15),
@@ -216,7 +216,7 @@ class InventoryForm extends HookWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('H Jual Setelah Discount'),
+                          const Text('البيع بعد الخصم'),
                           const SizedBox(height: 20),
                           Text(editingDiscount.text.isEmpty
                               ? '-'

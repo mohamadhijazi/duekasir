@@ -260,22 +260,22 @@ class SellingLeft extends HookWidget {
                                         context: context,
                                         builder: (context) => ShadDialog.alert(
                                           title: const Text(
-                                              'Apakah kamu yakin akan menghapusnya?'),
+                                              'هل أنت متأكد أنك تريد حذفه؟'),
                                           description: const Padding(
                                             padding: EdgeInsets.only(bottom: 8),
                                             child: Text(
-                                              'Tindakan ini tidak dapat di kembalikan, data akan di hapus dari list',
+                                              'لا يمكن التراجع عن هذا الإجراء، وسيتم حذف البيانات من القائمة',
                                             ),
                                           ),
                                           actions: [
                                             ShadButton.outline(
-                                              child: const Text('Batal'),
+                                              child: const Text('لإلغاء'),
                                               onPressed: () =>
                                                   Navigator.of(context)
                                                       .pop(false),
                                             ),
                                             ShadButton(
-                                                child: const Text('Lanjutkan'),
+                                                child: const Text('كمل'),
                                                 onPressed: () {
                                                   getIt
                                                       .get<SellingController>()

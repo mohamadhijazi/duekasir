@@ -71,29 +71,30 @@ class _ReportState extends State<Report> {
             ),
             child: Text(isLoading ? 'Loading...' : 'Refresh'),
           ),
-          PopupMenuButton<String>(
-            onSelected: (item) async {
-              if (item == 'sync') {
-                await Database().checkIsReportSynced();
-                reportController.report.refresh();
-                reportController.reportToday.refresh();
-                reportController.reportYesterday.refresh();
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'sync',
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.restore),
-                    SizedBox(width: 8),
-                    Text('Sync'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          // PopupMenuButton<String>(
+          //   onSelected: (item) async {
+          //     if (item == 'sync') {
+          //       await Database().checkIsReportSynced();
+          //       reportController.report.refresh();
+          //       reportController.reportToday.refresh();
+          //       reportController.reportYesterday.refresh();
+          //     }
+          //   },
+          //   itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+          //     const PopupMenuItem<String>(
+          //       value: 'sync',
+          //       child: Row(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: [
+          //           Icon(Icons.restore),
+          //           SizedBox(width: 8),
+          //           Text('Sync'),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
+       
         ],
       ),
       body: SingleChildScrollView(
@@ -134,31 +135,183 @@ class _ReportState extends State<Report> {
               ],
             ),
             const SizedBox(height: 20),
+           ShadCard(
+                  title: const Text('List Sales'),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: [
+                        ShadAccordion<PenjualanModel>.multiple(
+                          children: (report.value ?? []).reversed.map(
+                                (detail) => ShadAccordionItem(
+                                  value: detail,
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Wrap(
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.center,
+                                        spacing: 5,
+                                        runSpacing: 5,
+                                        children: [
+                                          Text(
+                                            '${detail.id}.',
+                                            style: ShadTheme.of(context)
+                                                .textTheme
+                                                .small,
+                                          ),
+                                          FutureBuilder<UserModel?>(
+                                            future: Database()
+                                                .getUserById(detail.kasir),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.hasData) {
+                                                return Text(
+                                                    snapshot.data?.nama ??
+                                                        'Admin');
+                                              }
+                                              return const Text('Admin');
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Wrap(
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.center,
+                                        spacing: 5,
+                                        runSpacing: 5,
+                                        children: [
+                                          Text(
+                                            '${currency.format(detail.totalHarga)} (${detail.totalItem.toString()})',
+                                            style: ShadTheme.of(context)
+                                                .textTheme
+                                                .small,
+                                          ),
+                                          Text(
+                                              dateDayWithTime
+                                                  .format(detail.createdAt),
+                                              style: ShadTheme.of(context)
+                                                  .textTheme
+                                                  .muted),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      ...detail.items.map(
+                                        (val) => ListTile(
+                                          title:
+                                              Text('${val.nama} - ${val.code}'),
+                                          subtitle: Row(
+                                            children: [
+                                              Text('${val.quantity} x '),
+                                              Text(val.diskonPersen == null ||
+                                                      val.diskonPersen == 0
+                                                  ? currency
+                                                      .format(val.hargaJual)
+                                                  : currency.format(val
+                                                          .hargaJual! -
+                                                      val.hargaJual! *
+                                                          (val.diskonPersen! /
+                                                              100))),
+                                            ],
+                                          ),
+                                          trailing: Text(val.diskonPersen ==
+                                                      null ||
+                                                  val.diskonPersen == 0
+                                              ? currency.format(val.hargaJual! *
+                                                  val.quantity!)
+                                              : currency.format((val
+                                                          .hargaJual! -
+                                                      val.hargaJual! *
+                                                          (val.diskonPersen! /
+                                                              100)) *
+                                                  val.quantity!)),
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          // ShadButton.secondary(
+                                          //   onPressed: () {
+                                          //     showShadDialog(
+                                          //       context: context,
+                                          //       builder: (context) =>
+                                          //           ReportSyncDialog(
+                                          //         id: detail.id!,
+                                          //         detail: detail,
+                                          //       ),
+                                          //     );
+                                          //   },
+                                          //   icon: const Padding(
+                                          //     padding:
+                                          //         EdgeInsets.only(right: 8),
+                                          //     child: Icon(
+                                          //       Icons.sync,
+                                          //       size: 16,
+                                          //     ),
+                                          //   ),
+                                          //   child: const Text('Sync'),
+                                          // ),
+                                          // 
+                                          ShadButton.outline(
+                                            onPressed: () {
+                                              showShadDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      ReportDeleteDialog(
+                                                          id: detail.id!));
+                                            },
+                                            icon: const Padding(
+                                              padding:
+                                                  EdgeInsets.only(right: 8),
+                                              child: Icon(
+                                                Icons.delete,
+                                                size: 16,
+                                              ),
+                                            ),
+                                            child: const Text('Delete'),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+          const SizedBox(height: 20),
+           Column(
+              children: [
+                ShadCard(
+                  width: screen,
+                  title: Text(
+                      currency.format(sumReport(reportToday.value ?? [])),
+                      style: theme.textTheme.h4),
+                  description: const Text('إجمالي المبيعات اليوم'),
+                ),
+                const SizedBox(height: 10),
+                ShadCard(
+                  width: screen,
+                  title: Text(
+                      currency.format(sumReport(reportYesteday.value ?? [])),
+                      style: theme.textTheme.h4),
+                  description: const Text('إجمالي مبيعات الأمس'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             Wrap(
               runSpacing: 10,
               spacing: 10,
               children: [
                 // ReportPie(width: screenRevenue),
-                Column(
-                  children: [
-                    ShadCard(
-                      width: screen,
-                      title: Text(
-                          currency.format(sumReport(reportToday.value ?? [])),
-                          style: theme.textTheme.h4),
-                      description: const Text('Total Penjualan Hari ini'),
-                    ),
-                    const SizedBox(height: 10),
-                    ShadCard(
-                      width: screen,
-                      title: Text(
-                          currency
-                              .format(sumReport(reportYesteday.value ?? [])),
-                          style: theme.textTheme.h4),
-                      description: const Text('Total Penjualan Kemarin'),
-                    ),
-                  ],
-                ),
                 if (report.hasValue)
                   Column(
                     children: [
@@ -311,146 +464,6 @@ class _ReportState extends State<Report> {
             const SizedBox(height: 20),
             const ReportVisitorWeekLy(),
             const SizedBox(height: 20),
-            ShadCard(
-              title: const Text('List Sales'),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Column(
-                  children: [
-                    ShadAccordion<PenjualanModel>.multiple(
-                      children: (report.value ?? []).reversed.map(
-                            (detail) => ShadAccordionItem(
-                              value: detail,
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Wrap(
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    spacing: 5,
-                                    runSpacing: 5,
-                                    children: [
-                                      Text(
-                                        '${detail.id}.',
-                                        style: ShadTheme.of(context)
-                                            .textTheme
-                                            .small,
-                                      ),
-                                      FutureBuilder<UserModel?>(
-                                        future: Database()
-                                            .getUserById(detail.kasir),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            return Text(
-                                                snapshot.data?.nama ?? 'Admin');
-                                          }
-                                          return const Text('Admin');
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  Wrap(
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    spacing: 5,
-                                    runSpacing: 5,
-                                    children: [
-                                      Text(
-                                        '${currency.format(detail.totalHarga)} (${detail.totalItem.toString()})',
-                                        style: ShadTheme.of(context)
-                                            .textTheme
-                                            .small,
-                                      ),
-                                      Text(
-                                          dateDayWithTime
-                                              .format(detail.createdAt),
-                                          style: ShadTheme.of(context)
-                                              .textTheme
-                                              .muted),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  ...detail.items.map(
-                                    (val) => ListTile(
-                                      title: Text('${val.nama} - ${val.code}'),
-                                      subtitle: Row(
-                                        children: [
-                                          Text('${val.quantity} x '),
-                                          Text(val.diskonPersen == null ||
-                                                  val.diskonPersen == 0
-                                              ? currency.format(val.hargaJual)
-                                              : currency.format(val.hargaJual! -
-                                                  val.hargaJual! *
-                                                      (val.diskonPersen! /
-                                                          100))),
-                                        ],
-                                      ),
-                                      trailing: Text(val.diskonPersen == null ||
-                                              val.diskonPersen == 0
-                                          ? currency.format(
-                                              val.hargaJual! * val.quantity!)
-                                          : currency.format((val.hargaJual! -
-                                                  val.hargaJual! *
-                                                      (val.diskonPersen! /
-                                                          100)) *
-                                              val.quantity!)),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      ShadButton.secondary(
-                                        onPressed: () {
-                                          showShadDialog(
-                                            context: context,
-                                            builder: (context) =>
-                                                ReportSyncDialog(
-                                              id: detail.id!,
-                                              detail: detail,
-                                            ),
-                                          );
-                                        },
-                                        icon: const Padding(
-                                          padding: EdgeInsets.only(right: 8),
-                                          child: Icon(
-                                            Icons.sync,
-                                            size: 16,
-                                          ),
-                                        ),
-                                        child: const Text('Sync'),
-                                      ),
-                                      ShadButton.outline(
-                                        onPressed: () {
-                                          showShadDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  ReportDeleteDialog(
-                                                      id: detail.id!));
-                                        },
-                                        icon: const Padding(
-                                          padding: EdgeInsets.only(right: 8),
-                                          child: Icon(
-                                            Icons.delete,
-                                            size: 16,
-                                          ),
-                                        ),
-                                        child: const Text('Delete'),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),

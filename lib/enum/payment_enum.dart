@@ -5,9 +5,9 @@ enum TypePayment {
 
   String get message {
     return switch (this) {
-      cash => 'Pembayaran Cash',
-      qris => 'Pembayaran dengan Qris',
-      transfer => 'Pembayaran melalui Transfer',
+      cash => ' Cash',
+      qris => 'الدفع باستخدام OMT',
+      transfer => 'الدفع عن طريق التحويل',
     };
   }
 }

@@ -19,11 +19,11 @@ class Selling extends HookWidget {
       appBar: AppBar(
         title: const Text('Selling'),
         centerTitle: false,
-        actions: [
-          IconButton(
-              onPressed: () => context.push('/print-setting'),
-              icon: const Icon(Icons.connect_without_contact))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () => context.push('/print-setting'),
+        //       icon: const Icon(Icons.connect_without_contact))
+        // ],
       ),
       body: isScreenWide
           ? const Row(
